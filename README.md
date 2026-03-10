@@ -4,6 +4,15 @@ A web-based Slurm cluster management UI that connects via SSH and provides real-
 
 ![Slurm Manager](https://img.shields.io/badge/Slurm-Manager-6366f1?style=for-the-badge)
 
+## Screenshots
+
+| | |
+|:---:|:---:|
+| ![Login](screenshots/login.png) | ![Dashboard](screenshots/dashboard.png) |
+| **SSH Connection** | **Dashboard** |
+| ![Nodes](screenshots/nodes.png) | ![Submit Job](screenshots/submit.png) |
+| **Nodes** | **Submit Job** |
+
 ## Features
 
 - **Dashboard** — Cluster overview with node state distribution, partition info, and job stats
