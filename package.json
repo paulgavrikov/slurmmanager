@@ -1,0 +1,15 @@
+{
+  "name": "slurmmanager",
+  "version": "1.0.0",
+  "description": "Web-based Slurm cluster management UI over SSH",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ssh2": "^1.15.0",
+    "ws": "^8.16.0"
+  }
+}
