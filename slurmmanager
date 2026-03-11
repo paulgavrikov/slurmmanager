@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+# Slurm Manager — launcher script
+# Usage: ./slurmmanager [--port PORT]
+#
+
+set -euo pipefail
+
+# Resolve the directory this script lives in (handles symlinks)
+SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "$0" 2>/dev/null || realpath "$0" 2>/dev/null || echo "$0")")" && pwd)"
+
+# --- Check for Node.js ---
+if ! command -v node &>/dev/null; then
+  echo "Error: Node.js is not installed or not in PATH." >&2
+  echo "Slurm Manager requires Node.js >= 16. Install it from https://nodejs.org" >&2
+  exit 1
+fi
+
+# Check Node.js version (need >= 16)
+NODE_MAJOR=$(node -e "console.log(process.versions.node.split('.')[0])")
+if [ "$NODE_MAJOR" -lt 16 ]; then
+  echo "Error: Node.js >= 16 is required (found v$(node -v | tr -d 'v'))." >&2
+  exit 1
+fi
+
+# --- Parse arguments ---
+PORT="${PORT:-3000}"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --port|-p)
+      PORT="$2"
+      shift 2
+      ;;
+    --help|-h)
+      echo "Slurm Manager"
+      echo ""
+      echo "Usage: $0 [options]"
+      echo ""
+      echo "Options:"
+      echo "  -p, --port PORT   Set the server port (default: 3000, or \$PORT env var)"
+      echo "  -h, --help        Show this help message"
+      echo ""
+      echo "Environment variables:"
+      echo "  PORT              Server port (default: 3000)"
+      echo "  SSH_AUTH_SOCK     SSH agent socket (used as fallback for authentication)"
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1 (use --help for usage)" >&2
+      exit 1
+      ;;
+  esac
+done
+
+export PORT
+
+# --- Start the server ---
+echo "Starting Slurm Manager on port ${PORT}..."
+exec node "${SCRIPT_DIR}/server.js"

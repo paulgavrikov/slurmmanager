@@ -26,9 +26,40 @@ A web-based Slurm cluster management UI that connects via SSH and provides real-
 - **Reconnect** — Automatic disconnect detection with reconnect prompt
 - **Remember Me** — Saves connection info to localStorage for quick reconnects
 
-## Quick Start
+## Installation
+
+Download the latest release for your platform from [GitHub Releases](../../releases):
+
+If you are on Mac OS (arm64 Apple Silicon):
+```bash
+tar -xzf slurmmanager-*-darwin-arm64.tar.gz
+cd slurmmanager-*-darwin-arm64
+```
+
+If you are on Linux (x64):
+```bash
+tar -xzf slurmmanager-*-linux-x64.tar.gz
+cd slurmmanager-*-linux-x64
+```
+
+Then launch the app:
+```bash
+./slurmmanager
+```
+
+Options:
+```bash
+./slurmmanager --port 8080   # Custom port (default: 3000)
+./slurmmanager --help        # Show all options
+```
+
+> **Requires** Node.js ≥ 16 installed on the system.
+
+## Development
 
 ```bash
+git clone https://github.com/paulgavrikov/slurmmanager.git
+cd slurmmanager
 npm install
 npm run dev
 ```

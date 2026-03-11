@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "Web-based Slurm cluster management UI over SSH",
   "main": "server.js",
+  "bin": {
+    "slurmmanager": "./slurmmanager"
+  },
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js"

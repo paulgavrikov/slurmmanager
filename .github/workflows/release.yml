@@ -1,0 +1,82 @@
+name: Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            arch: x64
+          - os: macos-latest
+            platform: darwin
+            arch: arm64
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install production dependencies
+        run: npm ci --omit=dev
+
+      - name: Determine version
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Create distribution archive
+        run: |
+          DIST_NAME="slurmmanager-${{ steps.version.outputs.VERSION }}-${{ matrix.platform }}-${{ matrix.arch }}"
+          mkdir -p "$DIST_NAME"
+
+          # Copy application files
+          cp server.js package.json "$DIST_NAME/"
+          cp -r public "$DIST_NAME/"
+          cp -r node_modules "$DIST_NAME/"
+          cp slurmmanager "$DIST_NAME/"
+          chmod +x "$DIST_NAME/slurmmanager"
+
+          # Copy docs
+          cp README.md "$DIST_NAME/" 2>/dev/null || true
+          cp LICENSE* "$DIST_NAME/" 2>/dev/null || true
+
+          # Create tarball
+          tar -czf "${DIST_NAME}.tar.gz" "$DIST_NAME"
+          echo "ARCHIVE=${DIST_NAME}.tar.gz" >> "$GITHUB_ENV"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARCHIVE }}
+          path: ${{ env.ARCHIVE }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: artifacts/*.tar.gz
