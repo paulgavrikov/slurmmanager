@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark-dimmed.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
 </head>
 <body>
 
@@ -330,7 +333,9 @@
               <button class="btn btn-sm btn-ghost" data-template="array">Array</button>
               <button class="btn btn-sm btn-ghost" data-template="mpi">MPI</button>
             </div>
-            <textarea id="submit-script" class="script-editor" spellcheck="false" placeholder="#!/bin/bash
+            <div class="editor-container">
+              <pre class="editor-highlight" aria-hidden="true"><code id="submit-highlight" class="language-bash"></code></pre>
+              <textarea id="submit-script" class="script-editor" spellcheck="false" placeholder="#!/bin/bash
 #SBATCH --job-name=my_job
 #SBATCH --output=slurm-%j.out
 #SBATCH --ntasks=1
@@ -339,6 +344,7 @@
 #SBATCH --time=01:00:00
 
 echo 'Hello from Slurm!'"></textarea>
+            </div>
             <div class="submit-actions">
               <div id="submit-result" class="submit-result hidden"></div>
               <button id="submit-btn" class="btn btn-primary">

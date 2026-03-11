@@ -880,9 +880,32 @@ echo "Job finished at $(date)"`
       if (filePath) wsSend('job_output', { filePath, lines });
     });
 
+    // ===== Syntax Highlighting for Script Editor =====
+    const submitScript = $('#submit-script');
+    const highlightCode = $('#submit-highlight');
+
+    function updateHighlight() {
+      const text = submitScript.value;
+      // highlight.js needs text content, add trailing newline so the <pre> height matches
+      highlightCode.textContent = text + '\n';
+      if (window.hljs) {
+        delete highlightCode.dataset.highlighted;
+        hljs.highlightElement(highlightCode);
+      }
+    }
+
+    submitScript.addEventListener('input', updateHighlight);
+
+    // Sync scroll positions between textarea and highlight layer
+    submitScript.addEventListener('scroll', () => {
+      const pre = highlightCode.parentElement;
+      pre.scrollTop = submitScript.scrollTop;
+      pre.scrollLeft = submitScript.scrollLeft;
+    });
+
     // Submit job
     $('#submit-btn').addEventListener('click', () => {
-      const script = $('#submit-script').value.trim();
+      const script = submitScript.value.trim();
       if (!script) { showToast('Please enter a job script', 'error'); return; }
       wsSend('submit_job', { script });
     });
@@ -891,19 +914,22 @@ echo "Job finished at $(date)"`
     $$('[data-template]').forEach(btn => {
       btn.addEventListener('click', () => {
         const t = TEMPLATES[btn.dataset.template];
-        if (t) $('#submit-script').value = t;
+        if (t) {
+          submitScript.value = t;
+          updateHighlight();
+        }
       });
     });
 
     // Tab key in script editor
-    $('#submit-script').addEventListener('keydown', (e) => {
+    submitScript.addEventListener('keydown', (e) => {
       if (e.key === 'Tab') {
         e.preventDefault();
-        const textarea = e.target;
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        textarea.value = textarea.value.substring(0, start) + '    ' + textarea.value.substring(end);
-        textarea.selectionStart = textarea.selectionEnd = start + 4;
+        const start = submitScript.selectionStart;
+        const end = submitScript.selectionEnd;
+        submitScript.value = submitScript.value.substring(0, start) + '    ' + submitScript.value.substring(end);
+        submitScript.selectionStart = submitScript.selectionEnd = start + 4;
+        updateHighlight();
       }
     });
 
