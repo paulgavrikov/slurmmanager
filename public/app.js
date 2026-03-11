@@ -129,13 +129,13 @@
         break;
       case 'squeue_me':
         squeueMeData = msg.data;
-        renderMyJobs();
         renderDashboard();
+        renderJobs();
         break;
       case 'squeue_all':
         squeueAllData = msg.data;
-        renderAllJobs();
         renderDashboard();
+        renderJobs();
         break;
       case 'sshare':
         sshareData = msg.data;
@@ -576,22 +576,15 @@
     return html;
   }
 
-  // ===== My Jobs =====
-  function renderMyJobs() {
-    const filter = ($('#myjob-filter')?.value || '').trim();
-    const data = filterData(squeueMeData, filter);
+  // ===== Jobs =====
+  function renderJobs() {
+    const filter = ($('#job-filter')?.value || '').trim();
+    const view = $('#job-view-select')?.value || 'all';
+    const sourceData = view === 'me' ? squeueMeData : squeueAllData;
+    const data = filterData(sourceData, filter);
     const cols = getJobColumns();
     const usedCols = cols.filter(c => data.some(r => r[c.key] !== undefined));
-    $('#myjobs-table').innerHTML = createTable(data, usedCols.length ? usedCols : cols, 'myjobs', { actions: getJobActions });
-  }
-
-  // ===== All Jobs =====
-  function renderAllJobs() {
-    const filter = ($('#alljob-filter')?.value || '').trim();
-    const data = filterData(squeueAllData, filter);
-    const cols = getJobColumns();
-    const usedCols = cols.filter(c => data.some(r => r[c.key] !== undefined));
-    $('#alljobs-table').innerHTML = createTable(data, usedCols.length ? usedCols : cols, 'alljobs', { actions: getJobActions });
+    $('#jobs-table').innerHTML = createTable(data, usedCols.length ? usedCols : cols, 'jobs', { actions: getJobActions });
   }
 
   // ===== History =====
@@ -843,8 +836,7 @@ echo "Job finished at $(date)"`
         }
         // Re-render the right table
         if (tableId === 'nodes') renderNodes();
-        else if (tableId === 'myjobs') renderMyJobs();
-        else if (tableId === 'alljobs') renderAllJobs();
+        else if (tableId === 'jobs') renderJobs();
         else if (tableId === 'history') renderHistory();
         else if (tableId === 'fairshare') renderFairshare();
         else if (tableId === 'dash-myjobs') renderDashboard();
@@ -905,18 +897,20 @@ echo "Job finished at $(date)"`
     });
 
     // Filters
-    ['node-filter', 'myjob-filter', 'alljob-filter', 'history-filter', 'fairshare-filter'].forEach(id => {
+    ['node-filter', 'job-filter', 'history-filter', 'fairshare-filter'].forEach(id => {
       const el = $(`#${id}`);
       if (el) {
         el.addEventListener('input', () => {
           if (id === 'node-filter') renderNodes();
-          else if (id === 'myjob-filter') renderMyJobs();
-          else if (id === 'alljob-filter') renderAllJobs();
+          else if (id === 'job-filter') renderJobs();
           else if (id === 'history-filter') renderHistory();
           else if (id === 'fairshare-filter') renderFairshare();
         });
       }
     });
+
+    // View Select
+    $('#job-view-select')?.addEventListener('change', renderJobs);
 
     // History load
     $('#history-load-btn').addEventListener('click', () => {
