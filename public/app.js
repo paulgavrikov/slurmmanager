@@ -140,6 +140,7 @@
       case 'sshare':
         sshareData = msg.data;
         renderFairshare();
+        renderDashboard();
         break;
       case 'job_details':
         renderJobDetails(msg.data);
@@ -473,6 +474,19 @@
     const preview = squeueMeData.slice(0, 5);
     const cols = getJobColumns();
     $('#dashboard-myjobs').innerHTML = createTable(preview, cols, 'dash-myjobs');
+
+    // Dashboard fairshare
+    if (sshareData && sshareData.length > 0) {
+      $('#stat-fairshare').classList.remove('hidden');
+      const myFs = sshareData.find(r => r.user === connectionInfo.user);
+      if (myFs) {
+        $('#stat-my-fairshare').textContent = myFs.fairshare || myFs.FairShare || '—';
+      } else {
+        $('#stat-my-fairshare').textContent = '—';
+      }
+    } else {
+      $('#stat-fairshare').classList.add('hidden');
+    }
   }
 
   // ===== Partitions =====
