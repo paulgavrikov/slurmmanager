@@ -1,5 +1,5 @@
 /* ===== Slurm Manager Frontend ===== */
-(function() {
+(function () {
   'use strict';
 
   // ===== State =====
@@ -18,7 +18,7 @@
   function saveCredentials(data) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    } catch (_) {}
+    } catch (_) { }
   }
 
   function loadCredentials() {
@@ -29,7 +29,7 @@
   }
 
   function clearCredentials() {
-    try { localStorage.removeItem(STORAGE_KEY); } catch (_) {}
+    try { localStorage.removeItem(STORAGE_KEY); } catch (_) { }
   }
 
   // ===== DOM Refs =====
@@ -500,11 +500,13 @@
     const filter = ($('#node-filter')?.value || '').trim();
     const data = filterData(sinfoNodesData, filter);
     const columns = [
-      { key: 'nodelist', label: 'Node', render: (val) => {
-        if (!val) return '';
-        const name = val.trim();
-        return `<span class="clickable-node" data-node="${escapeHtml(name)}">${escapeHtml(name)}</span>`;
-      }},
+      {
+        key: 'nodelist', label: 'Node', render: (val) => {
+          if (!val) return '';
+          const name = val.trim();
+          return `<span class="clickable-node" data-node="${escapeHtml(name)}">${escapeHtml(name)}</span>`;
+        }
+      },
       { key: 'partition', label: 'Partition' },
       { key: 'state', label: 'State', render: stateBadge },
       { key: 'cpus', label: 'CPUs' },
@@ -822,11 +824,17 @@ echo "Job finished at $(date)"`
           wsSend('release_job', { jobId });
           break;
         case 'output': {
-          // Try to guess output file path
           const outputPath = `slurm-${jobId}.out`;
           $('#output-path').value = outputPath;
           outputModal.classList.add('active');
           wsSend('job_output', { filePath: outputPath, lines: 100 });
+          break;
+        }
+        case 'output-err': {
+          const errPath = `slurm-${jobId}.err`;
+          $('#output-path').value = errPath;
+          outputModal.classList.add('active');
+          wsSend('job_output', { filePath: errPath, lines: 100 });
           break;
         }
       }

@@ -194,7 +194,7 @@ wss.on('connection', (ws) => {
     log('SSH', `client #${clientId} disconnected: ${reason}`);
     if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
     if (sshClient) {
-      try { sshClient.end(); } catch (_) {}
+      try { sshClient.end(); } catch (_) { }
       sshClient = null;
     }
     send('disconnected', { reason });
@@ -264,7 +264,7 @@ wss.on('connection', (ws) => {
                 foundKey = true;
                 break;
               }
-            } catch (_) {}
+            } catch (_) { }
           }
           if (!foundKey && process.env.SSH_AUTH_SOCK) {
             connectConfig.agent = process.env.SSH_AUTH_SOCK;
@@ -305,7 +305,7 @@ wss.on('connection', (ws) => {
           const res = await execSSHCommand(sshClient, `scancel ${msg.data.jobId}`);
           send('job_cancelled', { jobId: msg.data.jobId, stderr: res.stderr });
           // refresh after cancel
-          setTimeout(() => refreshAll().catch(() => {}), 1000);
+          setTimeout(() => refreshAll().catch(() => { }), 1000);
         } catch (e) {
           send('error', { message: 'Cancel failed: ' + e.message });
         }
@@ -315,8 +315,37 @@ wss.on('connection', (ws) => {
       case 'job_details': {
         if (!sshClient) { send('error', { message: 'Not connected' }); break; }
         try {
-          const res = await execSSHCommand(sshClient, `scontrol show job ${msg.data.jobId}`);
-          send('job_details', parseScontrolJob(res.stdout));
+          const jobId = msg.data.jobId;
+          let details = {};
+
+          // Primary: scontrol (works for active/recent jobs, contains StdOut/StdErr paths)
+          try {
+            const res = await execSSHCommand(sshClient, `scontrol show job ${jobId}`);
+            if (res.stdout.trim()) {
+              details = parseScontrolJob(res.stdout);
+            }
+          } catch (err) { }
+
+          // Fallback: sacct (works for historical jobs after they leave the cache)
+          if (Object.keys(details).length === 0) {
+            try {
+              const res = await execSSHCommand(sshClient, `sacct -j ${jobId} -l -P`);
+              if (res.stdout.trim()) {
+                const lines = res.stdout.trim().split('\n');
+                if (lines.length > 1) {
+                  const headers = lines[0].split('|');
+                  const values = lines[1].split('|'); // Main job is usually the first row after header
+                  headers.forEach((h, i) => {
+                    if (values[i] && values[i] !== 'Unknown') {
+                      details[h] = values[i];
+                    }
+                  });
+                }
+              }
+            } catch (err) { }
+          }
+
+          send('job_details', details);
         } catch (e) {
           send('error', { message: 'Job detail fetch failed: ' + e.message });
         }
@@ -370,7 +399,7 @@ wss.on('connection', (ws) => {
           const res = await execSSHCommand(sshClient, `sbatch ${tmpFile}`);
           await execSSHCommand(sshClient, `rm -f ${tmpFile}`);
           send('job_submitted', { stdout: res.stdout, stderr: res.stderr });
-          setTimeout(() => refreshAll().catch(() => {}), 1000);
+          setTimeout(() => refreshAll().catch(() => { }), 1000);
         } catch (e) {
           send('error', { message: 'Submit failed: ' + e.message });
         }
@@ -395,7 +424,7 @@ wss.on('connection', (ws) => {
         try {
           const res = await execSSHCommand(sshClient, `scontrol hold ${msg.data.jobId}`);
           send('job_held', { jobId: msg.data.jobId, stderr: res.stderr });
-          setTimeout(() => refreshAll().catch(() => {}), 1000);
+          setTimeout(() => refreshAll().catch(() => { }), 1000);
         } catch (e) {
           send('error', { message: 'Hold failed: ' + e.message });
         }
@@ -407,7 +436,7 @@ wss.on('connection', (ws) => {
         try {
           const res = await execSSHCommand(sshClient, `scontrol release ${msg.data.jobId}`);
           send('job_released', { jobId: msg.data.jobId, stderr: res.stderr });
-          setTimeout(() => refreshAll().catch(() => {}), 1000);
+          setTimeout(() => refreshAll().catch(() => { }), 1000);
         } catch (e) {
           send('error', { message: 'Release failed: ' + e.message });
         }
