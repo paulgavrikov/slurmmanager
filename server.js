@@ -411,8 +411,34 @@ wss.on('connection', (ws) => {
       case 'job_output': {
         if (!sshClient) { send('error', { message: 'Not connected' }); break; }
         try {
-          const filePath = msg.data.filePath;
+          let filePath = msg.data.filePath;
           const lines = msg.data.lines || 100;
+          const jobId = msg.data.jobId;
+
+          if (!filePath && jobId) {
+            try {
+              const res = await execSSHCommand(sshClient, `scontrol show job ${jobId}`);
+              if (res.stdout.trim()) {
+                const details = parseScontrolJob(res.stdout);
+                
+                if (msg.data.isError) {
+                  if (details.StdErr && details.StdErr !== '/dev/null') {
+                    filePath = details.StdErr;
+                  } else if (details.StdOut && details.StdOut !== '/dev/null') {
+                    filePath = details.StdOut;
+                  }
+                } else {
+                  if (details.StdOut && details.StdOut !== '/dev/null') {
+                    filePath = details.StdOut;
+                  } else if (details.StdErr && details.StdErr !== '/dev/null') {
+                    filePath = details.StdErr;
+                  }
+                }
+              }
+            } catch (err) { }
+            if (!filePath) filePath = msg.data.isError ? `slurm-${jobId}.err` : `slurm-${jobId}.out`;
+          }
+
           const res = await execSSHCommand(sshClient, `tail -n ${lines} ${filePath}`);
           send('job_output', { filePath, content: res.stdout, stderr: res.stderr });
         } catch (e) {

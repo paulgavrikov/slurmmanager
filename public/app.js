@@ -677,6 +677,9 @@
 
   // ===== Job Output =====
   function renderJobOutput(data) {
+    if (data.filePath) {
+      $('#output-path').value = data.filePath;
+    }
     if (data.stderr) {
       $('#output-content').textContent = `Error: ${data.stderr}`;
     } else {
@@ -871,17 +874,15 @@ echo "Job finished at $(date)"`
           wsSend('release_job', { jobId });
           break;
         case 'output': {
-          const outputPath = `slurm-${jobId}.out`;
-          $('#output-path').value = outputPath;
+          $('#output-path').value = 'Loading path...';
           outputModal.classList.add('active');
-          wsSend('job_output', { filePath: outputPath, lines: 100 });
+          wsSend('job_output', { jobId: jobId, lines: 100 });
           break;
         }
         case 'output-err': {
-          const errPath = `slurm-${jobId}.err`;
-          $('#output-path').value = errPath;
+          $('#output-path').value = 'Loading path...';
           outputModal.classList.add('active');
-          wsSend('job_output', { filePath: errPath, lines: 100 });
+          wsSend('job_output', { jobId: jobId, lines: 100, isError: true });
           break;
         }
       }
