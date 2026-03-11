@@ -175,16 +175,18 @@ wss.on('connection', (ws) => {
 
   async function refreshAll() {
     try {
-      const [sinfoRes, sinfoNodesRes, squeueMeRes, squeueAllRes] = await Promise.all([
+      const [sinfoRes, sinfoNodesRes, squeueMeRes, squeueAllRes, sshareRes] = await Promise.all([
         execSSHCommand(sshClient, 'sinfo -o "%20P  %10a  %6D  %10T  %8c  %12m  %80N  %12G  %10e  %10O"'),
         execSSHCommand(sshClient, 'sinfo -N -o "%N|%P|%T|%c|%m|%G|%e|%O"'),
         execSSHCommand(sshClient, `squeue -u ${username} -o "%18i  %12j  %12u  %10P  %8T  %12M  %12l  %8D  %6C  %12R  %20V"`),
         execSSHCommand(sshClient, 'squeue -o "%18i  %12j  %12u  %10P  %8T  %12M  %12l  %8D  %6C  %12R  %20V"'),
+        execSSHCommand(sshClient, 'sshare -a -P').catch(e => ({ stdout: '' }))
       ]);
       send('sinfo', parseSinfo(sinfoRes.stdout));
       send('sinfo_nodes', parsePipe(sinfoNodesRes.stdout));
       send('squeue_me', parseSqueue(squeueMeRes.stdout));
       send('squeue_all', parseSqueue(squeueAllRes.stdout));
+      send('sshare', sshareRes.stdout ? parsePipe(sshareRes.stdout) : []);
     } catch (e) {
       throw e;
     }

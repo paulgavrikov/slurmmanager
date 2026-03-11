@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Slurm Manager</title>
-  <meta name="description" content="Web-based Slurm cluster management dashboard with real-time monitoring and job control">
+  <meta name="description"
+    content="Web-based Slurm cluster management dashboard with real-time monitoring and job control">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark-dimmed.min.css">
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github-dark-dimmed.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
 </head>
+
 <body>
 
   <!-- Connection Modal -->
@@ -20,11 +26,14 @@
       <div class="modal-header">
         <div class="modal-logo">
           <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-            <rect width="40" height="40" rx="10" fill="url(#logo-grad)"/>
-            <path d="M12 14h16v3H12zm0 5h12v3H12zm0 5h14v3H12z" fill="white" opacity="0.9"/>
-            <defs><linearGradient id="logo-grad" x1="0" y1="0" x2="40" y2="40">
-              <stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/>
-            </linearGradient></defs>
+            <rect width="40" height="40" rx="10" fill="url(#logo-grad)" />
+            <path d="M12 14h16v3H12zm0 5h12v3H12zm0 5h14v3H12z" fill="white" opacity="0.9" />
+            <defs>
+              <linearGradient id="logo-grad" x1="0" y1="0" x2="40" y2="40">
+                <stop stop-color="#6366f1" />
+                <stop offset="1" stop-color="#8b5cf6" />
+              </linearGradient>
+            </defs>
           </svg>
         </div>
         <h1>Slurm Manager</h1>
@@ -75,11 +84,11 @@
       <div class="modal-header">
         <div class="disconnect-icon">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="1" y1="1" x2="23" y2="23"/>
-            <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/>
-            <path d="M10.71 5.05A16 16 0 0 1 22.56 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/>
-            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
-            <line x1="12" y1="20" x2="12.01" y2="20"/>
+            <line x1="1" y1="1" x2="23" y2="23" />
+            <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39" />
+            <path d="M10.71 5.05A16 16 0 0 1 22.56 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88" />
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+            <line x1="12" y1="20" x2="12.01" y2="20" />
           </svg>
         </div>
         <h2>Connection Lost</h2>
@@ -134,38 +143,71 @@
     <header id="topbar">
       <div class="topbar-left">
         <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
-          <rect width="40" height="40" rx="10" fill="url(#logo-grad2)"/>
-          <path d="M12 14h16v3H12zm0 5h12v3H12zm0 5h14v3H12z" fill="white" opacity="0.9"/>
-          <defs><linearGradient id="logo-grad2" x1="0" y1="0" x2="40" y2="40">
-            <stop stop-color="#6366f1"/><stop offset="1" stop-color="#8b5cf6"/>
-          </linearGradient></defs>
+          <rect width="40" height="40" rx="10" fill="url(#logo-grad2)" />
+          <path d="M12 14h16v3H12zm0 5h12v3H12zm0 5h14v3H12z" fill="white" opacity="0.9" />
+          <defs>
+            <linearGradient id="logo-grad2" x1="0" y1="0" x2="40" y2="40">
+              <stop stop-color="#6366f1" />
+              <stop offset="1" stop-color="#8b5cf6" />
+            </linearGradient>
+          </defs>
         </svg>
         <span class="topbar-title" id="topbar-title">Slurm Manager</span>
       </div>
       <div class="topbar-center">
         <nav id="main-nav">
           <button class="nav-btn active" data-tab="dashboard">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7" />
+              <rect x="14" y="3" width="7" height="7" />
+              <rect x="3" y="14" width="7" height="7" />
+              <rect x="14" y="14" width="7" height="7" />
+            </svg>
             Dashboard
           </button>
           <button class="nav-btn" data-tab="nodes">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><circle cx="6" cy="6" r="1" fill="currentColor"/><circle cx="6" cy="18" r="1" fill="currentColor"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="8" rx="2" />
+              <rect x="2" y="14" width="20" height="8" rx="2" />
+              <circle cx="6" cy="6" r="1" fill="currentColor" />
+              <circle cx="6" cy="18" r="1" fill="currentColor" />
+            </svg>
             Nodes
           </button>
           <button class="nav-btn" data-tab="myjobs">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
             My Jobs
           </button>
           <button class="nav-btn" data-tab="alljobs">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
             All Jobs
           </button>
           <button class="nav-btn" data-tab="history">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
             History
           </button>
+          <button class="nav-btn" data-tab="fairshare">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+            Fairshare
+          </button>
           <button class="nav-btn" data-tab="submit">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
             Submit
           </button>
         </nav>
@@ -176,10 +218,18 @@
           <span id="conn-label">Connected</span>
         </div>
         <button id="refresh-btn" class="btn btn-sm btn-ghost" title="Refresh Now">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10" />
+            <polyline points="1 20 1 14 7 14" />
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+          </svg>
         </button>
         <button id="disconnect-btn" class="btn btn-sm btn-ghost btn-danger" title="Disconnect">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
         </button>
       </div>
     </header>
@@ -191,7 +241,10 @@
         <div class="dashboard-grid">
           <div class="stat-card" id="stat-nodes">
             <div class="stat-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="8" rx="2" />
+                <rect x="2" y="14" width="20" height="8" rx="2" />
+              </svg>
             </div>
             <div class="stat-info">
               <span class="stat-value" id="stat-total-nodes">—</span>
@@ -200,7 +253,9 @@
           </div>
           <div class="stat-card" id="stat-running">
             <div class="stat-icon icon-green">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
             </div>
             <div class="stat-info">
               <span class="stat-value" id="stat-running-jobs">—</span>
@@ -209,7 +264,10 @@
           </div>
           <div class="stat-card" id="stat-pending">
             <div class="stat-icon icon-amber">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
             </div>
             <div class="stat-info">
               <span class="stat-value" id="stat-pending-jobs">—</span>
@@ -218,7 +276,10 @@
           </div>
           <div class="stat-card" id="stat-myjobs">
             <div class="stat-icon icon-indigo">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
             </div>
             <div class="stat-info">
               <span class="stat-value" id="stat-my-jobs">—</span>
@@ -319,6 +380,21 @@
         </div>
       </section>
 
+      <!-- Fairshare -->
+      <section id="tab-fairshare" class="tab-panel">
+        <div class="panel-header">
+          <h2>Fairshare</h2>
+          <div class="panel-actions">
+            <input type="text" id="fairshare-filter" class="filter-input" placeholder="Filter fairshare…">
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div id="fairshare-table" class="table-wrap"></div>
+          </div>
+        </div>
+      </section>
+
       <!-- Submit -->
       <section id="tab-submit" class="tab-panel">
         <div class="panel-header">
@@ -334,7 +410,8 @@
               <button class="btn btn-sm btn-ghost" data-template="mpi">MPI</button>
             </div>
             <div class="editor-container">
-              <pre class="editor-highlight" aria-hidden="true"><code id="submit-highlight" class="language-bash"></code></pre>
+              <pre class="editor-highlight"
+                aria-hidden="true"><code id="submit-highlight" class="language-bash"></code></pre>
               <textarea id="submit-script" class="script-editor" spellcheck="false" placeholder="#!/bin/bash
 #SBATCH --job-name=my_job
 #SBATCH --output=slurm-%j.out
@@ -348,7 +425,10 @@ echo 'Hello from Slurm!'"></textarea>
             <div class="submit-actions">
               <div id="submit-result" class="submit-result hidden"></div>
               <button id="submit-btn" class="btn btn-primary">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
                 Submit Job
               </button>
             </div>
@@ -360,4 +440,5 @@ echo 'Hello from Slurm!'"></textarea>
 
   <script src="app.js"></script>
 </body>
+
 </html>

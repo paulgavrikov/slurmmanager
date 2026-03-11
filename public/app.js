@@ -10,6 +10,7 @@
   let squeueAllData = [];
   let sinfoNodesData = [];
   let historyData = [];
+  let sshareData = [];
   let sortState = {};
 
   // ===== Credential Storage =====
@@ -135,6 +136,10 @@
         squeueAllData = msg.data;
         renderAllJobs();
         renderDashboard();
+        break;
+      case 'sshare':
+        sshareData = msg.data;
+        renderFairshare();
         break;
       case 'job_details':
         renderJobDetails(msg.data);
@@ -597,6 +602,33 @@
     $('#history-table').innerHTML = createTable(data, usedCols.length ? usedCols : columns, 'history');
   }
 
+  // ===== Fairshare =====
+  function renderFairshare() {
+    const filter = ($('#fairshare-filter')?.value || '').trim();
+    const data = filterData(sshareData, filter);
+    const columns = [
+      { key: 'account', label: 'Account' },
+      { key: 'user', label: 'User' },
+      { key: 'rawshares', label: 'RawShares' },
+      { key: 'normshares', label: 'NormShares' },
+      { key: 'rawusage', label: 'RawUsage' },
+      { key: 'normusage', label: 'NormUsage' },
+      { key: 'effectvusage', label: 'EffectvUsage' },
+      { key: 'fairshare', label: 'FairShare', render: (val) => {
+        if (!val) return '';
+        const num = parseFloat(val);
+        if (isNaN(num)) return escapeHtml(val);
+        let badgeCls = 'badge-idle'; // green
+        if (num < 0.1) badgeCls = 'badge-down'; // red
+        else if (num < 0.5) badgeCls = 'badge-drained'; // orange/amber
+        else if (num < 1.0) badgeCls = 'badge-allocated'; // blue/indigo
+        return `<span class="badge ${badgeCls}">${escapeHtml(val)}</span>`;
+      }}
+    ];
+    const usedCols = columns.filter(c => data.some(r => r[c.key] !== undefined));
+    $('#fairshare-table').innerHTML = createTable(data, usedCols.length ? usedCols : columns, 'fairshare');
+  }
+
   // ===== Job Details =====
   function renderJobDetails(details) {
     const container = $('#job-detail-content');
@@ -797,6 +829,7 @@ echo "Job finished at $(date)"`
         else if (tableId === 'myjobs') renderMyJobs();
         else if (tableId === 'alljobs') renderAllJobs();
         else if (tableId === 'history') renderHistory();
+        else if (tableId === 'fairshare') renderFairshare();
         else if (tableId === 'dash-myjobs') renderDashboard();
       }
     });
@@ -857,7 +890,7 @@ echo "Job finished at $(date)"`
     });
 
     // Filters
-    ['node-filter', 'myjob-filter', 'alljob-filter', 'history-filter'].forEach(id => {
+    ['node-filter', 'myjob-filter', 'alljob-filter', 'history-filter', 'fairshare-filter'].forEach(id => {
       const el = $(`#${id}`);
       if (el) {
         el.addEventListener('input', () => {
@@ -865,6 +898,7 @@ echo "Job finished at $(date)"`
           else if (id === 'myjob-filter') renderMyJobs();
           else if (id === 'alljob-filter') renderAllJobs();
           else if (id === 'history-filter') renderHistory();
+          else if (id === 'fairshare-filter') renderFairshare();
         });
       }
     });
