@@ -10,21 +10,24 @@ A web-based Slurm cluster management UI that connects via SSH and provides real-
 |:---:|:---:|
 | ![Login](screenshots/login.png) | ![Dashboard](screenshots/dashboard.png) |
 | **SSH Connection** | **Dashboard** |
-| ![Nodes](screenshots/nodes.png) | ![Submit Job](screenshots/submit.png) |
+| ![Nodes](screenshots/nodes.png) | ![Jobs](screenshots/submit.png) |
 | **Nodes** | **Submit Job** |
+| ![History](screenshots/history.png) | ![Fairshare](screenshots/fairshare.png) |
+| **Job History** | **Fairshare** |
 
 ## Features
 
-- **Dashboard** — Cluster overview with node state distribution, partition info, and job stats
+- **Dashboard** — Cluster overview with node state distribution, partition info, job stats, and your fairshare score
 - **Nodes** — Per-node list with state, CPUs, memory, GRES, and CPU load (click any node for details)
-- **My Jobs** — Your job queue with cancel, hold, release, view output, and detail actions
-- **All Jobs** — Full cluster queue with filtering and sorting
+- **Jobs** — Full cluster queue with filtering and sorting. Also shows your job queue with cancel, hold, release, view output, and detail actions.
 - **Job History** — Past job accounting via `sacct` with configurable date range
+- **Fairshare** — View fairshare scores for all accounts/users with color-coded values
 - **Submit Job** — Script editor with quick templates (Basic, GPU, Array, MPI)
 - **Job Output** — View stdout/stderr logs from job output files
 - **Auto-refresh** — Data refreshes every 10 seconds while connected
 - **Reconnect** — Automatic disconnect detection with reconnect prompt
 - **Remember Me** — Saves connection info to localStorage for quick reconnects
+- **Theme** — Light/Dark theme toggle
 
 ## Installation
 
