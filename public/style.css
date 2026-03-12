@@ -2,22 +2,27 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-primary: #0f1117;
-  --bg-secondary: #161822;
-  --bg-card: rgba(22, 24, 34, 0.7);
-  --bg-card-hover: rgba(30, 33, 48, 0.85);
-  --bg-glass: rgba(255, 255, 255, 0.03);
-  --bg-input: rgba(255, 255, 255, 0.05);
-  --border: rgba(255, 255, 255, 0.06);
-  --border-focus: rgba(99, 102, 241, 0.5);
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
+  /* Light Theme (Default) */
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.82);
+  --bg-card-hover: rgba(241, 245, 249, 0.95);
+  --bg-glass: rgba(0, 0, 0, 0.02);
+  --bg-input: rgba(0, 0, 0, 0.03);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-focus: rgba(99, 102, 241, 0.4);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
   --text-muted: #64748b;
-  --accent: #6366f1;
-  --accent-hover: #818cf8;
-  --accent-glow: rgba(99, 102, 241, 0.2);
-  --green: #22c55e;
-  --green-bg: rgba(34, 197, 94, 0.1);
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --accent-glow: rgba(79, 70, 229, 0.12);
+  --grad-1: rgba(99, 102, 241, 0.04);
+  --grad-2: rgba(139, 92, 246, 0.03);
+  --topbar-bg: rgba(248, 250, 252, 0.85);
+  --overlay-bg: rgba(248, 250, 252, 0.7);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+  --green-bg: rgba(16, 185, 129, 0.1);
   --amber: #f59e0b;
   --amber-bg: rgba(245, 158, 11, 0.1);
   --red: #ef4444;
@@ -33,11 +38,39 @@
   --radius: 12px;
   --radius-sm: 8px;
   --radius-xs: 6px;
-  --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.1);
   --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #0f1117;
+    --bg-secondary: #161822;
+    --bg-card: rgba(22, 24, 34, 0.7);
+    --bg-card-hover: rgba(30, 33, 48, 0.85);
+    --bg-glass: rgba(255, 255, 255, 0.03);
+    --bg-input: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.06);
+    --border-focus: rgba(99, 102, 241, 0.5);
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent: #6366f1;
+    --accent-hover: #818cf8;
+    --accent-glow: rgba(99, 102, 241, 0.2);
+    --grad-1: rgba(99, 102, 241, 0.08);
+    --grad-2: rgba(139, 92, 246, 0.06);
+    --topbar-bg: rgba(15, 17, 23, 0.8);
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+    --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+    --green: #22c55e;
+    --green-bg: rgba(34, 197, 94, 0.1);
+    --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+  }
 }
 
 html, body {
@@ -51,8 +84,8 @@ html, body {
 
 body {
   background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+    radial-gradient(ellipse at 20% 50%, var(--grad-1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, var(--grad-2) 0%, transparent 50%);
 }
 
 /* ===== Utilities ===== */
@@ -62,13 +95,16 @@ body {
 /* ===== Scrollbar ===== */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.2); }
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+}
 
 /* ===== Modal ===== */
 .modal-overlay {
   position: fixed; inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: var(--overlay-bg);
   backdrop-filter: blur(8px);
   display: none;
   align-items: center;
@@ -283,7 +319,7 @@ body {
   justify-content: space-between;
   padding: 0 20px;
   height: 56px;
-  background: rgba(15, 17, 23, 0.8);
+  background: var(--topbar-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   position: sticky;
@@ -299,7 +335,8 @@ body {
   font-weight: 700;
   font-size: 1rem;
   letter-spacing: -0.01em;
-  background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -855,7 +892,7 @@ tbody td {
 /* ===== Confirm Dialog ===== */
 .confirm-overlay {
   position: fixed; inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: var(--overlay-bg);
   display: flex; align-items: center; justify-content: center;
   z-index: 2000;
   animation: fadeIn 0.15s ease;
